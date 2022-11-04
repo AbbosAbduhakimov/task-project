@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_db
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: a.abdukhakimovv@gmail.com
+    password: juxtvhbtdewmjfjn
+    properties:
+      smtp:
+        auth: true
+        connection-timeout: 5000
+        timeout: 5000
+        write-timeout: 5000
+server:
+  port: 8183
+
+jwt:
+  token:
+    secret_key: taskappsecretkey
+mail:
+  message:
+    content: Click for verification this link
+    subject: Create User verification
+auth:
+  verification-link: http://localhost:8183/api/v1/activation-user/verification/
