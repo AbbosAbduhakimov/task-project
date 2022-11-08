@@ -28,7 +28,7 @@ server:
 
 jwt:
   token:
-    secret_key: taskappsecretkeytesttaskappsecretkeytest
+    secret_key: 256 bit key
 mail:
   message:
     content: Click for verification this link
