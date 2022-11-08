@@ -2,6 +2,7 @@ package com.example.dto.user;
 
 import com.example.enums.Role;
 import com.example.enums.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class UserDetailDTO {
 
     private Status status;
 
+    @JsonIgnore
     private Role role;
 
     private Long companyId;

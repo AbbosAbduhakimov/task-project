@@ -18,7 +18,10 @@ public class RedisConfiguration {
         final RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName("localhost");
         configuration.setPort(6379);
-        return new LettuceConnectionFactory(configuration);
+        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(configuration);
+        // Чтобы каждый раз использовать выделенное соединение
+        connectionFactory.setShareNativeConnection(false);
+        return connectionFactory;
     }
 
 

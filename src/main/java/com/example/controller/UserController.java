@@ -45,6 +45,6 @@ public class UserController {
     @GetMapping("/getAll")
     public ResponseEntity<?> getAll(@PathVariable(value = "companyId") Long companyId) {
         List<UserDetailDTO> response = userService.getAll(companyId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(response);
     }
 }

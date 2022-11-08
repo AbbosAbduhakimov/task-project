@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.aop.logging.Loggable;
 import com.example.dto.user.UserDTO;
 import com.example.dto.user.UserDetailDTO;
 import com.example.enums.Role;
@@ -26,6 +27,7 @@ public class UserService {
 
 
     @Transactional(readOnly = true)
+    @Loggable
     public UserDetailDTO get(Long companyId, Long id) {
         User user = userRepository.findByIdAndCompanyId(id, companyId).orElseThrow(() -> new ProjectNotFoundException("Employee by given id and company id not found"));
         UserDetailDTO userDetailDTO = new UserDetailDTO();
@@ -39,6 +41,7 @@ public class UserService {
     }
 
     @Transactional
+    @Loggable
     public void create(Long companyId, UserDTO userDTO) {
         if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
             throw new ProjectBadRequestException("User by given username " + userDTO.getUsername() + " already exists");
@@ -58,6 +61,7 @@ public class UserService {
     }
 
     @Transactional
+    @Loggable
     public void update(Long companyId, Long id, UserDTO userDTO) {
         User user = userRepository.findByIdAndCompanyId(id, companyId).orElseThrow(() -> new ProjectNotFoundException("Employee by given id and company id not found"));
 
@@ -71,6 +75,7 @@ public class UserService {
 
 
     @Transactional
+    @Loggable
     public void delete(Long companyId, Long id) {
         User user = userRepository.findByIdAndCompanyId(id, companyId).orElseThrow(() -> new ProjectNotFoundException("Employee by given id and company id not found"));
         user.setStatus(Status.IN_ACTIVE);
@@ -80,6 +85,7 @@ public class UserService {
 
 
     @Transactional
+    @Loggable
     public List<UserDetailDTO> getAll(Long companyId) {
         List<User> users = userRepository.findAllByCompanyId(companyId).orElseThrow(() -> new ProjectNotFoundException("Employee by given id and company id not found"));
         List<UserDetailDTO> userDetailDTOS = new ArrayList<>();
@@ -91,8 +97,9 @@ public class UserService {
 
 
     @Transactional
+    @Loggable
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new ProjectNotFoundException("Employee with this username not found"));
+        return userRepository.findByEmail(username).orElseThrow(() -> new ProjectNotFoundException("Employee with this username not found "+ username));
     }
 
 
@@ -103,6 +110,7 @@ public class UserService {
             userDetailDTOS.setUsername(user.getUsername());
             userDetailDTOS.setCompanyId(user.getCompany().getId());
             userDetailDTOS.setStatus(user.getStatus());
+            userDetailDTOS.setEmail(user.getEmail());
             return userDetailDTOS;
         }
         return null;

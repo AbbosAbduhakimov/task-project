@@ -8,11 +8,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.*;
 
 @ControllerAdvice
+@EnableWebMvc
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -33,19 +35,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, headers, status);
     }
 
-    @ExceptionHandler(ProjectBadRequestException.class)
+    @ExceptionHandler(value = {ProjectBadRequestException.class})
     public ResponseEntity<String> handlerBadRequest(ProjectBadRequestException exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 
-    @ExceptionHandler(ProjectNotFoundException.class)
+    @ExceptionHandler(value = {ProjectNotFoundException.class})
     public ResponseEntity<String> handleNotFound(ProjectNotFoundException exception) {
         return ResponseEntity.notFound().build();
     }
 
 
 
-    @ExceptionHandler(EmailBadRequestException.class)
+    @ExceptionHandler(value = {EmailBadRequestException.class})
     public ResponseEntity<String> handlerEmailBadRequest(EmailBadRequestException exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());
     }

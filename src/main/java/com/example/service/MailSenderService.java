@@ -18,7 +18,6 @@ public class MailSenderService {
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(content);
         mailSender.send(simpleMailMessage);
-        System.out.println();
     }
 
 }

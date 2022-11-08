@@ -50,7 +50,7 @@ public class ActivationUserService {
     public String signUp(SignUpDTO signUpDTO) {
 
         if (userRepository.findByEmail(signUpDTO.getEmail()).isPresent()) {
-            throw new ProjectBadRequestException("User by given email " + signUpDTO.getUsername() + " already exists");
+            throw new ProjectBadRequestException("User by given email " + signUpDTO.getEmail() + " already exists");
         }
 
         User user = new User();
@@ -64,14 +64,13 @@ public class ActivationUserService {
         company.setAddress(signUpDTO.getCompanyAddress());
         company.setZipCode(signUpDTO.getCompanyZipCode());
         company.setUsers(Collections.singleton(user));
-        Long company1 = companyService.createCompany(company);
-        user.setCompanyId(company1);
+        user.setCompanyId(companyService.createCompany(company));
         userRepository.save(user);
-        if (sendMessageToEmail(user)) {
+        if (!sendMessageToEmail(user)) {
             throw new EmailBadRequestException("Email sending failed");
         }
 
-        return "Failed in send message";
+        return "Message delivered";
     }
 
     public String verification(String token) {
@@ -104,6 +103,7 @@ public class ActivationUserService {
             mailSenderService.send(user.getEmail(), messageSubject, content);
         } catch (Exception e) {
             userRepository.delete(user);
+            userRepository.flush();
             return false;
         }
         return true;
